@@ -2,17 +2,17 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
+load_dotenv(dotenv_path=".env")
 
 class LLMClient:
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        api_key = os.getenv("OPENAI_API_KEY", "").strip()
+        if not api_key:
+            raise RuntimeError(
+                "OPENAI_API_KEY is missing. Create a .env file in the repo root and set OPENAI_API_KEY."
+            )
+        if " " in api_key:
+            raise RuntimeError("OPENAI_API_KEY contains spaces. Re-copy it without spaces/newlines.")
 
-    def chat(self, messages, temperature=0.2, json_mode=False):
-        return self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature,
-            response_format={"type": "json_object"} if json_mode else None
-        ).choices[0].message.content
+        self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        self.client = OpenAI(api_key=api_key)
