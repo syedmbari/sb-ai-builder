@@ -1,8 +1,7 @@
 # sb-ai-builder
 # This is an AI systems engineering lab
 
-# SB AI Builder Lab  
-### Agentic AI Systems for modernizing legacy (pre AI era) processes
+# Agentic AI Systems for modernizing legacy (pre AI era) processes
 
 ---
 
