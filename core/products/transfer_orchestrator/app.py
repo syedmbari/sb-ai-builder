@@ -8,9 +8,9 @@ from core.tool_registry import ToolRegistry
 from core.state_manager import StateManager
 from core.mcp_router import MCPRouter
 
-from products.transfer_orchestrator.db import init_db, save_case, set_human_decision, list_cases, get_case
-from products.transfer_orchestrator.workflow import TransferAgent
-from products.transfer_orchestrator.tools import extract_text_from_pdf, normalize_text, extract_fields, validate_fields, generate_review
+from .db import init_db, save_case, set_human_decision, list_cases, get_case
+from .workflow import TransferAgent
+from .tools import extract_text_from_pdf, normalize_text, extract_fields, validate_fields, generate_review
 
 st.set_page_config(page_title="Transfer Orchestrator", layout="wide")
 st.title("Transfer Orchestrator (Agentic Prototype)")
