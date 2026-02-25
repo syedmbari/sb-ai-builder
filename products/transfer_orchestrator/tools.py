@@ -192,7 +192,8 @@ def validate_fields(fields: Dict[str, Any]) -> Dict[str, Any]:
 
 def generate_review(llm, fields: Dict[str, Any], validation: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Draft agent review + customer message + internal note in JSON.
+    Draft agent review + customer message + internal note in JSON,
+    then apply deterministic decision gating based on validation.
     """
     import json
 
@@ -212,4 +213,35 @@ def generate_review(llm, fields: Dict[str, Any], validation: Dict[str, Any]) -> 
 
     raw = llm.chat(messages, temperature=0.2, json_mode=True)
     review = json.loads(raw)
+
+    # ---- Deterministic decision thresholds (override model output)
+    status = (validation.get("status") or "").upper()
+    errors = validation.get("errors") or []
+    warnings = validation.get("warnings") or []
+
+    model_next = (review.get("recommended_next_step") or "").upper()
+
+    if status == "FAIL" or len(errors) > 0:
+        decision = "DO_NOT_APPROVE"
+        why = "Validation FAILED. Must not proceed until errors are resolved."
+        recommended = "REQUEST_INFO"
+
+    elif model_next == "REQUEST_INFO":
+        decision = "APPROVE_UPON_VERIFICATION"
+        why = "Additional information is required before proceeding. Human must verify and request missing items."
+        recommended = "REQUEST_INFO"
+
+    elif status == "WARN" or len(warnings) >= 1:
+        decision = "APPROVE_UPON_VERIFICATION"
+        why = "Warnings present. Human must verify key fields before proceeding."
+        recommended = "READY_FOR_HUMAN_APPROVAL"
+
+    else:
+        decision = "APPROVE_TO_PROCEED"
+        why = "Checks passed with no material warnings. Human may approve proceeding."
+        recommended = "READY_FOR_HUMAN_APPROVAL"
+
+    review["human_must_decide"] = {"decision": decision, "why": why}
+    review["recommended_next_step"] = recommended
+
     return review

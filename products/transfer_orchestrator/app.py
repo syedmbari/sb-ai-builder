@@ -141,7 +141,21 @@ if run:
     with b:
         st.markdown("### Agent Review")
         st.json(state_out.get("review", {}), expanded=True)
+        
+        decision = state_out.get("review", {}).get("human_must_decide", {}).get("decision", "")
+        why = state_out.get("review", {}).get("human_must_decide", {}).get("why", "")
 
+        st.markdown("### Decision Threshold")
+        if decision == "DO_NOT_APPROVE":
+            st.error(f"Decision: {decision}")
+        elif decision == "APPROVE_UPON_VERIFICATION":
+            st.warning(f"Decision: {decision}")
+        else:
+            st.success(f"Decision: {decision}")
+
+        if why:
+            st.info(why)
+        
         st.markdown("### Human Gate")
         st.warning("Only a human can approve proceeding with submission.")
         c1, c2 = st.columns(2)
@@ -170,9 +184,6 @@ if run:
             height=110,
         )
 
-# -----------------------------
-# Load existing case
-# -----------------------------
 st.divider()
 st.subheader("Load existing case")
 load_id = st.text_input("Enter case ID to load", value="")
