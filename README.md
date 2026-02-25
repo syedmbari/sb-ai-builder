@@ -102,29 +102,29 @@ This architecture enables:
 ---
 
 ## Repository Structure
-sb-ai-builder/
-│
-├── README.md
-├── architecture/
-│ ├── system_design.md
-│ ├── agent_framework.md
-│
-├── core/
-│ ├── llm_client.py
-│ ├── tool_registry.py
-│ ├── agent_base.py
-│ ├── state_manager.py
-│ ├── mcp_router.py
-│
-├── products/
-│ ├── transfer_orchestrator/
-│ ├── reconciliation_agent/
-│ ├── (future systems)
-│
-├── data/
-├── requirements.txt
-├── .env.example
-└── .gitignore
+- sb-ai-builder/
+- │
+- ├── README.md
+- ├── architecture/
+- │ ├── system_design.md
+- │ ├── agent_framework.md
+- │
+- ├── core/
+- │ ├── llm_client.py
+- │ ├── tool_registry.py
+- │ ├── agent_base.py
+- │ ├── state_manager.py
+- │ ├── mcp_router.py
+- │
+- ├── products/
+- │ ├── transfer_orchestrator/
+- │ ├── reconciliation_agent/
+- │ ├── (future systems)
+- │
+- ├── data/
+- ├── requirements.txt
+- ├── .env.example
+- └── .gitignore
 
 
 ---
