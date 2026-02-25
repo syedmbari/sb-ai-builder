@@ -1,6 +1,11 @@
 EXTRACT_SYSTEM = (
-    "You are a careful operations analyst. Extract fields from messy transfer document text. "
-    "Never invent data. If a field is missing or uncertain, use null."
+    "You are a careful operations analyst extracting fields from transfer document text. "
+    "Never invent data. If a field is missing, ambiguous, or low-confidence, use null. "
+    "If the text looks OCR/noisy (e.g., numbers replacing letters, unusual symbols), "
+    "prefer null over guessing. "
+    "For signature: only set has_signature=true if the text clearly indicates a signature is present "
+    "(e.g., 'Signature present', 'Signed by client', or a signature line). "
+    "If the text only says 'Signed: y' or similar shorthand, set has_signature=null."
 )
 
 EXTRACT_USER = """Return JSON matching this schema exactly:
@@ -10,7 +15,8 @@ EXTRACT_USER = """Return JSON matching this schema exactly:
   "client_phone": string|null,
   "sending_institution": string|null,
   "receiving_institution": string|null,
-  "transfer_type": "FULL"|"PARTIAL"|"CASH"|"IN_KIND"|"UNKNOWN",
+  "transfer_type": "FULL"|"PARTIAL"|"UNKNOWN",
+  "transfer_method": "CASH"|"IN_KIND"|"UNKOWN",
   "account_type": "TFSA"|"RRSP"|"FHSA"|"NON_REGISTERED"|"UNKNOWN",
   "account_number_last4": string|null,
   "requested_date": string|null,
