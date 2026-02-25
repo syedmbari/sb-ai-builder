@@ -4,7 +4,7 @@ EXTRACT_SYSTEM = (
 )
 
 EXTRACT_USER = """Return JSON matching this schema exactly:
-{
+{{
   "client_full_name": string|null,
   "client_email": string|null,
   "client_phone": string|null,
@@ -15,7 +15,7 @@ EXTRACT_USER = """Return JSON matching this schema exactly:
   "account_number_last4": string|null,
   "requested_date": string|null,
   "has_signature": boolean|null
-}
+}}
 
 TEXT:
 ---
@@ -37,15 +37,15 @@ REVIEW_USER = """Given:
 {validation_json}
 
 Return JSON:
-{
+{{
   "case_summary": string,
   "checklist": [string],
   "recommended_next_step": "REQUEST_INFO"|"ESCALATE"|"READY_FOR_HUMAN_APPROVAL",
   "customer_message_draft": string,
   "internal_note": string,
-  "human_must_decide": {
+  "human_must_decide": {{
      "decision": "APPROVE_TO_PROCEED",
      "why": string
-  }
-}
+  }}
+}}
 """
